@@ -1018,6 +1018,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileBoard
   tilePrefab: {fileID: 2774579102497674038, guid: 00fb991ea02aa6e4aa1b4f05cd804039, type: 3}
+  tileStates:
+  - {fileID: 11400000, guid: d2260e2cdec02af438048409fb2356f0, type: 2}
+  - {fileID: 11400000, guid: 1c851889f1d765d478a5b43bb03a35e5, type: 2}
+  - {fileID: 11400000, guid: b9750e8f569d8f6438ddbcad461070ef, type: 2}
+  - {fileID: 11400000, guid: f2664e7da1c9dbe48bc22fc9dc0a437e, type: 2}
+  - {fileID: 11400000, guid: 7139e1c6f8e01544a968a632c23c3c47, type: 2}
+  - {fileID: 11400000, guid: 963c3f0611017b34c96e63657e57dec2, type: 2}
+  - {fileID: 11400000, guid: 20a7d0e353d34bc4893598038ebd98cf, type: 2}
+  - {fileID: 11400000, guid: 78b2c1ea20425f94eb7e5d46762b7a93, type: 2}
+  - {fileID: 11400000, guid: 2e11a03e6efa0454ebb62eaf66f86e3d, type: 2}
+  - {fileID: 11400000, guid: e59fc564656858745bb44a754ab7f817, type: 2}
+  - {fileID: 11400000, guid: cff29827aa1d1874a9b6c92bba284e7e, type: 2}
 --- !u!1 &1096967577
 GameObject:
   m_ObjectHideFlags: 0
