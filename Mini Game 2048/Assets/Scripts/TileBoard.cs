@@ -24,7 +24,11 @@ public class TileBoard : MonoBehaviour
     private void CreateTile()
     {
         Tile tile = Instantiate(tilePrefab, grid.transform);
-        tile.SetState(tileStates[0], 2);
+        float randomValue = Random.Range(0f, 1f);
+        if (randomValue < 0.9f)
+            tile.SetState(tileStates[0], 2);
+        else
+            tile.SetState(tileStates[1], 4);
         tile.Spawn(grid.GetRandomEmptyCell());
         tiles.Add(tile);
     }
