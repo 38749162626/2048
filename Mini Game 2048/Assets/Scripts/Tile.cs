@@ -12,6 +12,8 @@ public class Tile : MonoBehaviour
     private Image background;
     private TextMeshProUGUI text;
 
+    private Coroutine moveCoroutine;
+
     private void Awake()
     {
         background = GetComponent<Image>();
@@ -51,7 +53,10 @@ public class Tile : MonoBehaviour
         this.cell = cell;
         this.cell.tile = this;
 
-        StartCoroutine(MoveAnimate(cell.transform.position));
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveAnimate(cell.transform.position));
     }
 
     private IEnumerator MoveAnimate(Vector3 to)
@@ -69,5 +74,7 @@ public class Tile : MonoBehaviour
         }
 
         transform.position = to;
+
+        moveCoroutine = null;
     }
 }

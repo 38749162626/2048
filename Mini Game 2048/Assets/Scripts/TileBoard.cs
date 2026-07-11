@@ -73,6 +73,8 @@ public class TileBoard : MonoBehaviour
 
     private void MoveTiles(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
     {
+        bool changed = false;
+
         for(int x = startX; x >= 0 && x < grid.width; x += incrementX)
         {
             for(int  y = startY; y >= 0 && y < grid.height; y += incrementY)
@@ -81,13 +83,16 @@ public class TileBoard : MonoBehaviour
 
                 if (cell.occupied)
                 {
-                    MoveTile(cell.tile, direction);
+                    changed |= MoveTile(cell.tile, direction);
                 }
             }
         }
+
+        if(changed)
+            WaitForChanges();
     }
 
-    private void MoveTile(Tile tile, Vector2Int direction)
+    private bool MoveTile(Tile tile, Vector2Int direction)
     {
         TileCell newCell = null;
         TileCell adjacent = grid.GetAdjacentCell(tile.cell, direction);
@@ -107,10 +112,10 @@ public class TileBoard : MonoBehaviour
         if (newCell != null)
         {
             tile.MoveTo(newCell);
-
-            if (!waiting)
-                WaitForChanges();
+            return true;
         }
+
+        return false;
     }
 
     private IEnumerator WaitForChanges(float time = 0.1f)
