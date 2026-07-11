@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,8 @@ public class TileBoard : MonoBehaviour
 
     private TileGrid grid;
     private List<Tile> tiles;
+
+    public bool waiting {  get; private set; }
 
     private void Awake()
     {
@@ -36,7 +39,7 @@ public class TileBoard : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
+        if (ctx.performed && !waiting)
         {
             var moveVector = ctx.ReadValue<Vector2>();
             Debug.Log(moveVector);
@@ -104,6 +107,18 @@ public class TileBoard : MonoBehaviour
         if (newCell != null)
         {
             tile.MoveTo(newCell);
+
+            if (!waiting)
+                WaitForChanges();
         }
+    }
+
+    private IEnumerator WaitForChanges(float time = 0.1f)
+    {
+        waiting = true;
+
+        yield return new WaitForSeconds(time);
+
+        waiting = false;
     }
 }
