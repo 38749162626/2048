@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,17 +29,23 @@ public class TileBoard : MonoBehaviour
     private void CreateTile()
     {
         Tile tile = Instantiate(tilePrefab, grid.transform);
+
         float randomValue = Random.Range(0f, 1f);
         if (randomValue < 0.9f)
             tile.SetState(tileStates[0], 2);
         else
             tile.SetState(tileStates[1], 4);
+
         tile.Spawn(grid.GetRandomEmptyCell());
         tiles.Add(tile);
+
+        if (!waiting)
+            StartCoroutine(WaitForChanges());
     }
 
     public void Move(InputAction.CallbackContext ctx)
     {
+        Debug.Log(waiting);
         if (ctx.performed && !waiting)
         {
             var moveVector = ctx.ReadValue<Vector2>();
@@ -88,8 +95,10 @@ public class TileBoard : MonoBehaviour
             }
         }
 
-        if(changed)
-            WaitForChanges();
+        if (changed)
+        {
+            StartCoroutine(WaitForChanges());
+        }
     }
 
     private bool MoveTile(Tile tile, Vector2Int direction)

@@ -12,12 +12,13 @@ public class Tile : MonoBehaviour
     private Image background;
     private TextMeshProUGUI text;
 
-    private Coroutine moveCoroutine;
+    private RectTransform rectTransform;
 
     private void Awake()
     {
         background = GetComponent<Image>();
         text = GetComponentInChildren<TextMeshProUGUI>();
+        rectTransform = GetComponent<RectTransform>();
     }
 
     public void SetState(TileState state, int number)
@@ -41,6 +42,25 @@ public class Tile : MonoBehaviour
         this.cell.tile = this;
 
         transform.position = cell.transform.position;
+
+        StartCoroutine(SpawnAnimate());
+    }
+
+    private IEnumerator SpawnAnimate(float duration = 0.1f)
+    {
+        background.color = new Color(background.color.r, background.color.g, background.color.b, 1);
+        rectTransform.localScale = Vector3.zero;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, Vector3.one, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rectTransform.localScale = Vector3.one;
     }
 
     public void MoveTo(TileCell cell)
@@ -53,16 +73,12 @@ public class Tile : MonoBehaviour
         this.cell = cell;
         this.cell.tile = this;
 
-        if (moveCoroutine != null)
-            StopCoroutine(moveCoroutine);
-
-        moveCoroutine = StartCoroutine(MoveAnimate(cell.transform.position));
+        StartCoroutine(MoveAnimate(cell.transform.position));
     }
 
-    private IEnumerator MoveAnimate(Vector3 to)
+    private IEnumerator MoveAnimate(Vector3 to, float duration = 0.1f)
     {
         float elapsed = 0f;
-        float duration = 0.1f;
 
         Vector3 from = transform.position;
 
@@ -74,7 +90,5 @@ public class Tile : MonoBehaviour
         }
 
         transform.position = to;
-
-        moveCoroutine = null;
     }
 }
