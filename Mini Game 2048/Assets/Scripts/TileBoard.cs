@@ -1,6 +1,7 @@
 using NUnit.Framework.Internal.Builders;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,7 +41,7 @@ public class TileBoard : MonoBehaviour
         tiles.Add(tile);
 
         if (!waiting)
-            StartCoroutine(WaitForChanges());
+            StartCoroutine(WaitForChanges(false));
     }
 
     public void Move(InputAction.CallbackContext ctx)
@@ -110,7 +111,12 @@ public class TileBoard : MonoBehaviour
         {
             if (adjacent.occupied)
             {
-                // TODO: merging
+                if(CanMerge(tile, adjacent.tile))
+                {
+                    Merge(tile, adjacent.tile);
+                    return true;
+                }
+
                 break;
             }
 
@@ -127,12 +133,54 @@ public class TileBoard : MonoBehaviour
         return false;
     }
 
-    private IEnumerator WaitForChanges(float time = 0.1f)
+    private bool CanMerge(Tile a, Tile b)
+    {
+        return a.number == b.number && !b.locked;
+    }
+
+    private void Merge(Tile a, Tile b)
+    {
+        tiles.Remove(a);
+        a.Merge(b.cell);
+
+        int index = Mathf.Clamp(IndexOf(b.state) + 1, 0, tileStates.Length - 1);
+        int number = b.number * 2;
+
+        b.SetState(tileStates[index], number);
+    }
+
+    private int IndexOf(TileState state)
+    {
+        for(int i = 0; i < tileStates.Length; i++)
+        {
+            if(tileStates[i] == state)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private IEnumerator WaitForChanges(bool createTile = true, float time = 0.1f)
     {
         waiting = true;
 
         yield return new WaitForSeconds(time);
 
         waiting = false;
+
+        if (createTile)
+        {
+            foreach(var tile in tiles)
+            {
+                tile.locked = false;
+            }
+
+            if(tiles.Count != grid.size)
+            {
+                CreateTile();
+            }
+        }
     }
 }
