@@ -90,7 +90,7 @@ public class Tile : MonoBehaviour
 
             Debug.Log(Vector3.Distance(transform.position, to));
 
-            if (merging && Vector3.Distance(transform.position, to) < 75)
+            if (merging && Vector3.Distance(transform.position, to) < 95)
                 Destroy(gameObject);
 
             yield return null;
