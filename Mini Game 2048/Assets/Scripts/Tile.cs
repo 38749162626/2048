@@ -110,4 +110,29 @@ public class Tile : MonoBehaviour
 
         StartCoroutine(MoveAnimate(cell.transform.position, true));
     }
+
+    public IEnumerator MergeAnimate(float duration = 0.1f)
+    {
+        rectTransform.localScale = Vector3.one;
+
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, new Vector3(1.1f, 1.1f, 1.1f), elapsed / duration / 2);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, Vector3.one, elapsed / duration / 2);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rectTransform.localScale = Vector3.one;
+    }
 }
