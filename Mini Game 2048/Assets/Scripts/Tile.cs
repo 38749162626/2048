@@ -47,7 +47,7 @@ public class Tile : MonoBehaviour
         StartCoroutine(SpawnAnimate());
     }
 
-    private IEnumerator SpawnAnimate(float duration = 0.1f)
+    private IEnumerator SpawnAnimate(float duration = 0.5f)
     {
         background.color = new Color(background.color.r, background.color.g, background.color.b, 1);
         rectTransform.localScale = Vector3.zero;
@@ -87,15 +87,16 @@ public class Tile : MonoBehaviour
         {
             transform.position = Vector3.Lerp(from, to, elapsed / duration);
             elapsed += Time.deltaTime;
+
+            Debug.Log(Vector3.Distance(transform.position, to));
+
+            if (merging && Vector3.Distance(transform.position, to) < 75)
+                Destroy(gameObject);
+
             yield return null;
         }
 
         transform.position = to;
-
-        if (merging)
-        {
-            Destroy(gameObject);
-        }
     }
 
     public void Merge(TileCell cell)
@@ -119,7 +120,7 @@ public class Tile : MonoBehaviour
 
         while (elapsed < duration)
         {
-            rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, new Vector3(1.1f, 1.1f, 1.1f), elapsed / duration / 2);
+            rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, new Vector3(1.15f, 1.15f, 1.15f), elapsed / duration / 2);
             elapsed += Time.deltaTime;
             yield return null;
         }
