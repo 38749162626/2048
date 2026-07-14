@@ -156,6 +156,8 @@ public class TileBoard : MonoBehaviour
 
         b.SetState(tileStates[index], number);
         StartCoroutine(b.MergeAnimate());
+
+        gameManager.IncreaseScore(number);
     }
 
     private int IndexOf(TileState state)
