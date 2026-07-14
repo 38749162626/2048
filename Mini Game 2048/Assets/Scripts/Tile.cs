@@ -114,12 +114,18 @@ public class Tile : MonoBehaviour
 
     public IEnumerator MergeAnimate(float duration = 0.1f)
     {
+        if (this == null || gameObject == null || rectTransform == null)
+            yield break;
+
         rectTransform.localScale = Vector3.one;
 
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
+            if (this == null || gameObject == null || rectTransform == null)
+                yield break;
+
             rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, new Vector3(1.15f, 1.15f, 1.15f), elapsed / duration / 2);
             elapsed += Time.deltaTime;
             yield return null;
@@ -129,10 +135,16 @@ public class Tile : MonoBehaviour
 
         while (elapsed < duration)
         {
+            if (this == null || gameObject == null || rectTransform == null)
+                yield break;
+
             rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, Vector3.one, elapsed / duration / 2);
             elapsed += Time.deltaTime;
             yield return null;
         }
+
+        if (this == null || gameObject == null || rectTransform == null)
+            yield break;
 
         rectTransform.localScale = Vector3.one;
     }
