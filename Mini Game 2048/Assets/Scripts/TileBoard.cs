@@ -1,6 +1,7 @@
 using NUnit.Framework.Internal.Builders;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +11,7 @@ public class TileBoard : MonoBehaviour
     public GameManager gameManager;
 
     public Tile tilePrefab;
+    public GameObject floatingTextPrefab;
     public TileState[] tileStates;
 
     private TileGrid grid;
@@ -158,6 +160,8 @@ public class TileBoard : MonoBehaviour
         StartCoroutine(b.MergeAnimate());
 
         gameManager.IncreaseScore(number);
+        GameObject floatingText = Instantiate(floatingTextPrefab, this.transform.parent);
+        StartCoroutine(floatingText.GetComponent<FloatingText>().SetText("+" + number));
     }
 
     private int IndexOf(TileState state)

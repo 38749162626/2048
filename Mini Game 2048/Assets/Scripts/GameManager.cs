@@ -1,7 +1,7 @@
-using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public CanvasGroup gameOver;
     public Button newGameButton;
     public TextMeshProUGUI scoreText;
+    public RectTransform scoreRectTrans;
     public TextMeshProUGUI highscoreText;
 
     private int score;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
         highscoreText.text = LoadHighscore().ToString();
 
         gameOver.alpha = 0f;
+        scoreRectTrans.localScale = Vector3.one;
         newGameButton.interactable = true;
         gameOver.interactable = false;
 
@@ -60,9 +62,39 @@ public class GameManager : MonoBehaviour
         canvasGroup.alpha = to;
     }
 
+    private IEnumerator PopText()
+    {
+        float duration = 0.2f;
+        float elapsed = 0f;
+
+        scoreRectTrans.localScale = Vector3.one;
+
+        while (elapsed < duration)
+        {
+            scoreRectTrans.localScale = Vector3.Lerp(scoreRectTrans.localScale, new Vector3(1.3f, 1.3f, 1.3f), duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        scoreRectTrans.localScale = new Vector3(1.3f, 1.3f, 1.3f);
+
+        duration = 0.1f;
+        elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            scoreRectTrans.localScale = Vector3.Lerp(scoreRectTrans.localScale, Vector3.one, duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        scoreRectTrans.localScale = Vector3.one;
+    }
+
     public void IncreaseScore(int points)
     {
         SetScore(score + points);
+        StartCoroutine(PopText());
     }
 
     private void SetScore(int score)

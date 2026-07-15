@@ -97,6 +97,9 @@ public class Tile : MonoBehaviour
         }
 
         transform.position = to;
+
+        if(merging)
+            Destroy(gameObject);
     }
 
     public void Merge(TileCell cell)
