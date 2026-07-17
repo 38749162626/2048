@@ -1,10 +1,10 @@
-using NUnit.Framework.Internal.Builders;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.EnhancedTouch;
 
 public class TileBoard : MonoBehaviour
 {
@@ -19,10 +19,66 @@ public class TileBoard : MonoBehaviour
 
     public bool waiting {  get; private set; }
 
+    private Vector2 _touchStartPos;
+    private bool _isSwiping = false;
+
     private void Awake()
     {
         grid = GetComponentInChildren<TileGrid>();
         tiles = new List<Tile>(16);
+    }
+
+    private void OnEnable()
+    {
+        EnhancedTouchSupport.Enable(); // 必须启用
+    }
+
+    private void OnDisable()
+    {
+        EnhancedTouchSupport.Disable();
+    }
+
+    private void Update()
+    {
+        HandleTouchSwipe();
+    }
+
+    private void HandleTouchSwipe()
+    {
+        if (waiting) return;
+        if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 0) return;
+
+        var touch = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches[0]; // 只取第一个手指
+
+        if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
+        {
+            _touchStartPos = touch.screenPosition;
+            _isSwiping = true;
+        }
+        else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended && _isSwiping)
+        {
+            _isSwiping = false;
+            Vector2 swipeDelta = touch.screenPosition - _touchStartPos; // 总位移
+
+            float threshold = Mathf.Min(Screen.width, Screen.height) * 0.05f;
+            if (swipeDelta.magnitude < threshold) return;
+
+            Vector2Int direction = Vector2Int.zero;
+            if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+                direction.x = swipeDelta.x > 0 ? 1 : -1;
+            else
+                direction.y = swipeDelta.y > 0 ? 1 : -1;
+
+            // 调用移动逻辑（与键盘一致）
+            if (direction.y == 1)
+                MoveTiles(Vector2Int.up, 0, 1, 1, 1);
+            else if (direction.y == -1)
+                MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
+            else if (direction.x == -1)
+                MoveTiles(Vector2Int.left, 1, 1, 0, 1);
+            else if (direction.x == 1)
+                MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
+        }
     }
 
     public void ClearBoard()
@@ -56,39 +112,36 @@ public class TileBoard : MonoBehaviour
 
     public void Move(InputAction.CallbackContext ctx)
     {
-        Debug.Log(waiting);
-        if (ctx.performed && !waiting)
-        {
-            var moveVector = ctx.ReadValue<Vector2>();
-            Debug.Log(moveVector);
-            //  W
-            if (moveVector.y == 1)
-            {
-                Debug.Log("W");
-                MoveTiles(Vector2Int.up, 0, 1, 1, 1);
-            }
-            //  S
-            else if (moveVector.y == -1)
-            {
-                Debug.Log("S");
-                MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
-            }
-            //  A
-            else if(moveVector.x == -1)
-            {
-                Debug.Log("A");
-                MoveTiles(Vector2Int.left, 1, 1, 0, 1);
-            }
-            //  D
-            else if(moveVector.x == 1)
-            {
-                Debug.Log("D");
-                MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
-            }
-            
-        }
-    }
+        // ----- 其他
+        // 只处理 performed，且必须可移动（waiting == false）
+        if (!ctx.performed && waiting) return;
 
+        Vector2 moveVector = ctx.ReadValue<Vector2>();
+
+        // 你原来的方向判断，完全照搬
+        if (moveVector.y == 1)
+        {
+            Debug.Log("W");
+            MoveTiles(Vector2Int.up, 0, 1, 1, 1);
+        }
+        else if (moveVector.y == -1)
+        {
+            Debug.Log("S");
+            MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
+        }
+        else if (moveVector.x == -1)
+        {
+            Debug.Log("A");
+            MoveTiles(Vector2Int.left, 1, 1, 0, 1);
+        }
+        else if (moveVector.x == 1)
+        {
+            Debug.Log("D");
+            MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
+        }
+        return;
+    }
+    
     private void MoveTiles(Vector2Int direction, int startX, int incrementX, int startY, int incrementY)
     {
         bool changed = false;
@@ -145,7 +198,7 @@ public class TileBoard : MonoBehaviour
 
     private bool CanMerge(Tile a, Tile b)
     {
-        return a.number == b.number && !b.locked;
+        return a.number == b.number && b.number != 2048 && !b.locked;
     }
 
     private void Merge(Tile a, Tile b)

@@ -143,7 +143,7 @@ public class UINavigationManager : MonoBehaviour
         }
         else
         {
-            Button first = FindObjectOfType<Button>();
+            Button first = FindFirstObjectByType<Button>();
             if (first != null)
                 EventSystem.current.SetSelectedGameObject(first.gameObject);
             else
