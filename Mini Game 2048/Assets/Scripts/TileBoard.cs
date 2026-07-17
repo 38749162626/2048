@@ -45,20 +45,22 @@ public class TileBoard : MonoBehaviour
 
     private void HandleTouchSwipe()
     {
-        if (waiting) return;
+        if (waiting) return; // 动画期间直接忽略所有触摸（包括 Begin 和 Ended）
+
         if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 0) return;
 
-        var touch = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches[0]; // 只取第一个手指
+        var touch = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches[0];
 
         if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
         {
+            // 只有在非等待状态下才记录滑动起点
             _touchStartPos = touch.screenPosition;
             _isSwiping = true;
         }
         else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended && _isSwiping)
         {
             _isSwiping = false;
-            Vector2 swipeDelta = touch.screenPosition - _touchStartPos; // 总位移
+            Vector2 swipeDelta = touch.screenPosition - _touchStartPos;
 
             float threshold = Mathf.Min(Screen.width, Screen.height) * 0.05f;
             if (swipeDelta.magnitude < threshold) return;
@@ -114,29 +116,27 @@ public class TileBoard : MonoBehaviour
     {
         // ----- 其他
         // 只处理 performed，且必须可移动（waiting == false）
-        if (!ctx.performed && waiting) return;
+        if (ctx.control.device is Touchscreen || ctx.control.device is Pointer) return;
+
+        if (!ctx.performed || waiting) return;
 
         Vector2 moveVector = ctx.ReadValue<Vector2>();
 
         // 你原来的方向判断，完全照搬
         if (moveVector.y == 1)
         {
-            Debug.Log("W");
             MoveTiles(Vector2Int.up, 0, 1, 1, 1);
         }
         else if (moveVector.y == -1)
         {
-            Debug.Log("S");
             MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
         }
         else if (moveVector.x == -1)
         {
-            Debug.Log("A");
             MoveTiles(Vector2Int.left, 1, 1, 0, 1);
         }
         else if (moveVector.x == 1)
         {
-            Debug.Log("D");
             MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
         }
         return;

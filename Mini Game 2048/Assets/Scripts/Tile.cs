@@ -88,8 +88,6 @@ public class Tile : MonoBehaviour
             transform.position = Vector3.Lerp(from, to, elapsed / duration);
             elapsed += Time.deltaTime;
 
-            Debug.Log(Vector3.Distance(transform.position, to));
-
             if (merging && Vector3.Distance(transform.position, to) < 95)
                 Destroy(gameObject);
 
