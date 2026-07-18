@@ -21,6 +21,7 @@ public class TileBoard : MonoBehaviour
 
     private Vector2 _touchStartPos;
     private bool _isSwiping = false;
+    private bool _hasTriggeredThisSwipe = false;
 
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class TileBoard : MonoBehaviour
 
     private void HandleTouchSwipe()
     {
-        if (waiting) return; // 动画期间直接忽略所有触摸（包括 Begin 和 Ended）
+        if (waiting) return; // 动画期间不处理
 
         if (UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.Count == 0) return;
 
@@ -53,33 +54,45 @@ public class TileBoard : MonoBehaviour
 
         if (touch.phase == UnityEngine.InputSystem.TouchPhase.Began)
         {
-            // 只有在非等待状态下才记录滑动起点
             _touchStartPos = touch.screenPosition;
             _isSwiping = true;
+            _hasTriggeredThisSwipe = false; // 重置触发标记
         }
-        else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended && _isSwiping)
+        else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Moved && _isSwiping)
+        {
+            // 如果本次滑动已经触发过，则忽略后续移动
+            if (_hasTriggeredThisSwipe) return;
+
+            Vector2 swipeDelta = touch.screenPosition - _touchStartPos;
+            float threshold = Mathf.Min(Screen.width, Screen.height) * 0.12f; // 可调
+
+            if (swipeDelta.magnitude >= threshold)
+            {
+                // 确定方向
+                Vector2Int direction = Vector2Int.zero;
+                if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+                    direction.x = swipeDelta.x > 0 ? 1 : -1;
+                else
+                    direction.y = swipeDelta.y > 0 ? 1 : -1;
+
+                // 执行移动
+                if (direction.y == 1)
+                    MoveTiles(Vector2Int.up, 0, 1, 1, 1);
+                else if (direction.y == -1)
+                    MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
+                else if (direction.x == -1)
+                    MoveTiles(Vector2Int.left, 1, 1, 0, 1);
+                else if (direction.x == 1)
+                    MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
+
+                // 标记已触发，本次滑动不再触发第二次
+                _hasTriggeredThisSwipe = true;
+            }
+        }
+        else if (touch.phase == UnityEngine.InputSystem.TouchPhase.Ended || touch.phase == UnityEngine.InputSystem.TouchPhase.Canceled)
         {
             _isSwiping = false;
-            Vector2 swipeDelta = touch.screenPosition - _touchStartPos;
-
-            float threshold = Mathf.Min(Screen.width, Screen.height) * 0.05f;
-            if (swipeDelta.magnitude < threshold) return;
-
-            Vector2Int direction = Vector2Int.zero;
-            if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
-                direction.x = swipeDelta.x > 0 ? 1 : -1;
-            else
-                direction.y = swipeDelta.y > 0 ? 1 : -1;
-
-            // 调用移动逻辑（与键盘一致）
-            if (direction.y == 1)
-                MoveTiles(Vector2Int.up, 0, 1, 1, 1);
-            else if (direction.y == -1)
-                MoveTiles(Vector2Int.down, 0, 1, grid.height - 2, -1);
-            else if (direction.x == -1)
-                MoveTiles(Vector2Int.left, 1, 1, 0, 1);
-            else if (direction.x == 1)
-                MoveTiles(Vector2Int.right, grid.width - 2, -1, 0, 1);
+            // 不需要重置 _hasTriggeredThisSwipe，因为下次 Began 会重置
         }
     }
 
