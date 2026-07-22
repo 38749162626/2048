@@ -48,7 +48,7 @@
 
 如果你不想从源码构建，可以直接下载已编译好的游戏包。
 
-[![Download Latest Release](https://img.shields.io/badge/📥-Download_Latest_Release-brightgreen?style=for-the-badge&logo=github)](https://github.com/3874916262/2048/releases)
+[![Download Latest Release](https://img.shields.io/badge/📥-Download_Latest_Release-brightgreen?style=for-the-badge&logo=github)](https://github.com/38749162626/2048/releases)
 
 > 请从 Releases 页面选择适合你操作系统的版本。
 
