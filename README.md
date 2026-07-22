@@ -49,7 +49,4 @@
 
 1. **克隆仓库**  
    ```bash
-   git clone https://github.com/你的用户名/你的仓库名.git# 2048 — 经典数字合成游戏
-
-![GitHub repo size](https://img.shields.io/github/repo-size/你的用户名/你的仓库名)
-![GitHub last commit](https://img.shields.io/github/last-commit/你的用户名/你的仓库名)
+   git clone https://github.com/3874916262/2048.git# 2048 — 经典数字合成游戏
