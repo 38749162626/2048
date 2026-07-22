@@ -37,10 +37,10 @@
 
 | 游戏进行中 | 游戏结束 |
 |:---:|:---:|
-| ![游戏进行中](./Begin.png) | ![游戏结束](./End.png) |
+| ![游戏进行中](./Screenshots/Begin.png) | ![游戏结束](./Screenshots/End.png) |
 
 🎬 **动态演示**（GIF）  
-![游戏动效演示](./Merging.gif)
+![游戏动效演示](./Screenshots/Merging.gif)
 
 ---
 
