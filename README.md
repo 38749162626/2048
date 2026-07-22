@@ -44,6 +44,16 @@
 
 ---
 
+## 📦 下载游戏
+
+如果你不想从源码构建，可以直接下载已编译好的游戏包。
+
+[![Download Latest Release](https://img.shields.io/badge/📥-Download_Latest_Release-brightgreen?style=for-the-badge&logo=github)](https://github.com/3874916262/2048/releases)
+
+> 请从 Releases 页面选择适合你操作系统的版本。
+
+---
+
 ## 💻 源码展示
 
 本项目为 Unity 开发的游戏源。如需克隆，请按以下步骤操作：
