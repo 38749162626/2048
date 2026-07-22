@@ -1,7 +1,7 @@
 # 2048 — 经典数字合成游戏
 
-![GitHub repo size](https://img.shields.io/github/repo-size/你的用户名/你的仓库名)
-![GitHub last commit](https://img.shields.io/github/last-commit/你的用户名/你的仓库名)
+![GitHub repo size](https://img.shields.io/github/repo-size/3874916262/2048)
+![GitHub last commit](https://img.shields.io/github/last-commit/3874916262/2048)
 
 ---
 
