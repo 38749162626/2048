@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -44,6 +45,14 @@ public class GameManager : MonoBehaviour
         gameOver.interactable = true;
 
         StartCoroutine(Fade(gameOver, 1f, 1f));
+    }
+
+    public void Escape(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            Application.Quit();
+        }
     }
 
     private IEnumerator Fade(CanvasGroup canvasGroup, float to, float delay)

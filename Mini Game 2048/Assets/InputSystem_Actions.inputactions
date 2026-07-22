@@ -82,15 +82,15 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Swipe",
+                    "name": "Esc",
                     "type": "Button",
-                    "id": "3e2ca374-2d04-49b8-8c71-65d1cf8abf6f",
+                    "id": "44317ae3-5fc4-41bc-aec1-dd500626daa3",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -540,12 +540,23 @@
                 },
                 {
                     "name": "",
-                    "id": "be9318cf-e5c0-4e5b-b951-5400636aae00",
-                    "path": "<Touchscreen>/Press",
+                    "id": "8969e60f-d1b7-4b82-9dc9-8f5a339235b4",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Swipe",
+                    "groups": ";Gamepad",
+                    "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9fb17574-72cf-43b8-901b-d52d6d6f46b7",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Esc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
