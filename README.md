@@ -1,5 +1,8 @@
 # 2048 — 经典数字合成游戏
 
+[![GitHub repo size](https://img.shields.io/github/repo-size/38749162626/2048_WebGame?style=flat-square&logo=github)](https://github.com/38749162626/2048)
+[![GitHub last commit](https://img.shields.io/github/last-commit/38749162626/2048_WebGame?style=flat-square&logo=github)](https://github.com/38749162626/2048)
+
 ## 🎯 游戏目标
 
 在 4×4 的网格中，通过滑动数字方块，将相同数字合并，**最终合成数字 `2048`** 即为胜利。游戏会记录你的最高分（BEST），不断挑战自我，看你能突破多少分！
