@@ -48,7 +48,7 @@
 
 无需下载，点击下方链接即可直接在浏览器中游玩：
 
-[**点击进入 2048 游戏**](https://38749162626.github.io/2048_WebGame/)
+[![Play Now](https://img.shields.io/badge/▶️-Play_Now-4CAF50?style=for-the-badge)](https://38749162626.github.io/2048_WebGame/)
 
 > 游戏基于 Unity WebGL 构建，建议使用最新版 Chrome、Edge 或 Firefox 浏览器获得最佳体验。
 
