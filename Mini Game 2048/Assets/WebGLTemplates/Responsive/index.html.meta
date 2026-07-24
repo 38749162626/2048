@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 46cc7a2b04ca0441fb87dd5fd0cdcbaf
+timeCreated: 1524522383
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 117308
+  packageName: Responsive WebGL Template
+  packageVersion: 1.2
+  assetPath: Assets/WebGLTemplates/Responsive/index.html
+  uploadId: 292996

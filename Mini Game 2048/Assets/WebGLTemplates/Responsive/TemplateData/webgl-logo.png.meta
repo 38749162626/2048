@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 27df0acade940486597a2f8fcea7673a
+timeCreated: 1524522383
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 117308
+  packageName: Responsive WebGL Template
+  packageVersion: 1.2
+  assetPath: Assets/WebGLTemplates/Responsive/TemplateData/webgl-logo.png
+  uploadId: 292996

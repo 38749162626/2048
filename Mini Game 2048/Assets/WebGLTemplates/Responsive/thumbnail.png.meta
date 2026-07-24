@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b1bc3c73c41e345029b22ea22d9a5011
+timeCreated: 1524522383
+licenseType: Store
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 117308
+  packageName: Responsive WebGL Template
+  packageVersion: 1.2
+  assetPath: Assets/WebGLTemplates/Responsive/thumbnail.png
+  uploadId: 292996

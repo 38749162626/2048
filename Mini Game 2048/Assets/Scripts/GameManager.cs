@@ -14,12 +14,49 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI highscoreText;
 
     private int score;
+    private int windowedWidth;   // 记忆的窗口宽度
+    private int windowedHeight;  // 记忆的窗口高度
+    private int lastWidth;       // 上一次检测到的窗口宽度（用于避免重复SetResolution）
+    private int lastHeight;      // 上一次检测到的窗口高度
+
+    private void Awake()
+    {
+        // 初始化窗口记忆为当前屏幕分辨率（作为默认值）
+        windowedWidth = Screen.currentResolution.width;
+        windowedHeight = Screen.currentResolution.height;
+        lastWidth = Screen.width;
+        lastHeight = Screen.height;
+    }
 
     private void Start()
     {
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
 
+        // 启动时进入无边框全屏（适配屏幕原生分辨率）
+        Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+
         NewGame();
+    }
+
+    private void Update()
+    {
+        // 仅在窗口化模式下检测尺寸变化
+        if (!Screen.fullScreen)
+        {
+            // 如果窗口尺寸发生变化（玩家拖拽了边缘）
+            if (Screen.width != lastWidth || Screen.height != lastHeight)
+            {
+                // 更新记忆
+                windowedWidth = Screen.width;
+                windowedHeight = Screen.height;
+                lastWidth = Screen.width;
+                lastHeight = Screen.height;
+
+                // 将渲染分辨率设为当前窗口实际像素尺寸（保持1:1，画面清晰）
+                Screen.SetResolution(lastWidth, lastHeight, false);
+            }
+        }
     }
 
     public void NewGame()
@@ -52,6 +89,37 @@ public class GameManager : MonoBehaviour
         if (ctx.performed)
         {
             Application.Quit();
+        }
+    }
+
+    public void FullScreen(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            if (Screen.fullScreen)
+            {
+                // ----- 退出全屏，进入窗口化 -----
+                // 1. 切换为窗口模式
+                Screen.fullScreenMode = FullScreenMode.Windowed;
+                // 2. 使用记忆的窗口尺寸恢复窗口大小（渲染分辨率也同步）
+                Screen.SetResolution(windowedWidth, windowedHeight, false);
+                // 3. 更新 last 变量，避免 Update 误触发
+                lastWidth = windowedWidth;
+                lastHeight = windowedHeight;
+            }
+            else
+            {
+                // ----- 进入全屏（无边框） -----
+                // 1. 先记录当前窗口尺寸（作为下次退出时的记忆）
+                windowedWidth = Screen.width;
+                windowedHeight = Screen.height;
+                // 2. 切换到无边框全屏，渲染分辨率设为屏幕原生尺寸（消除黑边）
+                Screen.fullScreenMode = FullScreenMode.FullScreenWindow;
+                Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+                // 3. 更新 last 变量
+                lastWidth = Screen.width;
+                lastHeight = Screen.height;
+            }
         }
     }
 
@@ -112,15 +180,13 @@ public class GameManager : MonoBehaviour
     {
         this.score = score;
         scoreText.text = score.ToString();
-
         SaveHighscore();
     }
 
     private void SaveHighscore()
-    {   
+    {
         int highscore = LoadHighscore();
-
-        if(score > highscore)
+        if (score > highscore)
         {
             PlayerPrefs.SetInt("highscore", score);
         }

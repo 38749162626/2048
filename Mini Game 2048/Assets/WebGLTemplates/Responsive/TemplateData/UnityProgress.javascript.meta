@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2c13747651ae2449590bb55d08f4cb3d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 117308
+  packageName: Responsive WebGL Template
+  packageVersion: 1.2
+  assetPath: Assets/WebGLTemplates/Responsive/TemplateData/UnityProgress.javascript
+  uploadId: 292996
