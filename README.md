@@ -1,5 +1,8 @@
 # 2048 — 经典数字合成游戏
 
+[![GitHub repo size](https://img.shields.io/github/repo-size/38749162626/2048_WebGame?style=flat-square&logo=github)](https://github.com/38749162626/2048)
+[![GitHub last commit](https://img.shields.io/github/last-commit/38749162626/2048_WebGame?style=flat-square&logo=github)](https://github.com/38749162626/2048)
+
 ## 🎯 游戏目标
 
 在 4×4 的网格中，通过滑动数字方块，将相同数字合并，**最终合成数字 `2048`** 即为胜利。游戏会记录你的最高分（BEST），不断挑战自我，看你能突破多少分！
@@ -9,9 +12,9 @@
 ## 🕹️ 玩法详解
 
 ### 基本操作
-- **键盘**：按方向键（↑ ↓ ← →）或 (W A S D) 控制方块整体移动。
+- **键盘**：按方向键（↑ ↓ ← →）或 (W A S D) 控制方块整体移动。(Esc键退出)
 - **触屏**：在手机/平板上直接滑动屏幕即可。
-- **手柄**：十字键控制方块整体移动。
+- **手柄**：十字键控制方块整体移动。(Home键退出)
 - 每次移动，**所有方块会一同滑向对应方向**，直到撞墙或撞到其他方块。
 
 ### 核心规则
@@ -44,6 +47,16 @@
 
 ---
 
+## 🎮 在线游玩
+
+无需下载，点击下方链接即可直接在浏览器中游玩：
+
+[![Play Now](https://img.shields.io/badge/▶️-Play_Now-4CAF50?style=for-the-badge)](https://38749162626.github.io/2048_WebGame/)
+
+> 游戏基于 Unity WebGL 构建，建议使用最新版 Chrome、Edge 或 Firefox 浏览器获得最佳体验。
+
+---
+
 ## 📦 下载游戏
 
 如果你不想从源码构建，可以直接下载已编译好的游戏包。
@@ -58,6 +71,6 @@
 
 本项目为 Unity 开发的游戏源代码。如需克隆，请按以下步骤操作：
 
-1. **克隆仓库**  
+**克隆仓库**  
    ```bash
    git clone https://github.com/3874916262/2048.git# 2048 — 经典数字合成游戏
