@@ -221,6 +221,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc051e5db034a34ab4051df967dfd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileRow
+--- !u!1 &66034053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 66034054}
+  m_Layer: 5
+  m_Name: Titles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &66034054
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66034053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 783982511}
+  - {fileID: 2113066402}
+  - {fileID: 434484793}
+  m_Father: {fileID: 1694486723}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &100019384
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +467,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1694486723}
+  m_Father: {fileID: 66034054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1514,7 +1552,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1694486723}
+  m_Father: {fileID: 66034054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2558,6 +2596,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc051e5db034a34ab4051df967dfd7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TileRow
+--- !u!1 &1251336361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1251336363}
+  - component: {fileID: 1251336362}
+  m_Layer: 0
+  m_Name: UI Adaptive Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1251336362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251336361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc96082ab4a581a4c9fd54fbb25cb2f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIAdaptiveManager
+  Board: {fileID: 1067087911}
+  Titles: {fileID: 66034054}
+  NewGameButton: {fileID: 623094417}
+  Score: {fileID: 670835530}
+  Best: {fileID: 1288069916}
+  customBoardPos: {x: 0, y: 0}
+  customTitlesPos: {x: -260, y: -80}
+  customNewGameButtonPos: {x: 341, y: 211}
+  customScorePos: {x: 334, y: 153}
+  customBestPos: {x: 334, y: 87}
+--- !u!4 &1251336363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251336361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1288069915
 GameObject:
   m_ObjectHideFlags: 0
@@ -3243,9 +3335,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 783982511}
-  - {fileID: 2113066402}
-  - {fileID: 434484793}
+  - {fileID: 66034054}
   - {fileID: 623094417}
   - {fileID: 1288069916}
   - {fileID: 670835530}
@@ -3932,7 +4022,7 @@ GameObject:
   - component: {fileID: 1956101839}
   - component: {fileID: 1956101840}
   m_Layer: 0
-  m_Name: UINavigationManager
+  m_Name: UI Navigation Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3947,7 +4037,7 @@ Transform:
   m_GameObject: {fileID: 1956101838}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 911.101, y: 581.7317, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4365,7 +4455,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1694486723}
+  m_Father: {fileID: 66034054}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4478,6 +4568,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 14440547}
+  - {fileID: 1251336363}
   - {fileID: 1956101839}
   - {fileID: 1560191430}
   - {fileID: 498572124}
