@@ -247,7 +247,20 @@ public class TileBoard : MonoBehaviour
         if (CheckForGameOver())
         {
             gameManager.GameOver();
+            RecordManager.AddRecord(gameManager.score, CheckForGamePass());
         }
+    }
+
+    private bool CheckForGamePass()
+    {
+        foreach (var tile in tiles)
+        {
+            if (tile.number == 2048)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private bool CheckForGameOver()

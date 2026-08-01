@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public RectTransform scoreRectTrans;
     public TextMeshProUGUI highscoreText;
 
-    private int score;
+    public int score{private set; get; }
     private int windowedWidth;   // 记忆的窗口宽度
     private int windowedHeight;  // 记忆的窗口高度
     private int lastWidth;       // 上一次检测到的窗口宽度（用于避免重复SetResolution）
