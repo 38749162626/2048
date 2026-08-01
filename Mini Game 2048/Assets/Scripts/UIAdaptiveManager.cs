@@ -9,6 +9,7 @@ public class UIAdaptiveManager : MonoBehaviour
     public RectTransform Score;
     public RectTransform Best;
     public RectTransform RecordButton;
+    public RectTransform Crown;
 
     [Header("横屏自定义位置 (anchoredPosition)")]
     public Vector2 customBoardPos;
@@ -17,6 +18,7 @@ public class UIAdaptiveManager : MonoBehaviour
     public Vector2 customScorePos;
     public Vector2 customBestPos;
     public Vector2 customRecordButtonPos;
+    public Vector2 customCrownPos;
 
     // 竖屏初始位置（自动记录）
     private Vector2 defaultBoardPos;
@@ -25,6 +27,7 @@ public class UIAdaptiveManager : MonoBehaviour
     private Vector2 defaultScorePos;
     private Vector2 defaultBestPos;
     private Vector2 defaultRecordButtonPos;
+    private Vector2 defaultCrownPos;
 
     // 当前屏幕方向（true=横屏，false=竖屏）
     private bool isLandscape = false;
@@ -45,6 +48,7 @@ public class UIAdaptiveManager : MonoBehaviour
         if (Score != null) defaultScorePos = Score.anchoredPosition;
         if (Best != null) defaultBestPos = Best.anchoredPosition;
         if (RecordButton != null) defaultRecordButtonPos = RecordButton.anchoredPosition;
+        if (Crown != null) defaultCrownPos = Crown.anchoredPosition;
 
         // 2. 根据当前屏幕方向应用正确的布局
         float aspect = (float)Screen.width / Screen.height;
@@ -83,6 +87,7 @@ public class UIAdaptiveManager : MonoBehaviour
         if (Score != null) Score.anchoredPosition = customScorePos;
         if (Best != null) Best.anchoredPosition = customBestPos;
         if (RecordButton != null) RecordButton.anchoredPosition = customRecordButtonPos;
+        if (Crown != null) Crown.anchoredPosition = customCrownPos;
     }
 
     /// <summary>
@@ -96,5 +101,6 @@ public class UIAdaptiveManager : MonoBehaviour
         if (Score != null) Score.anchoredPosition = defaultScorePos;
         if (Best != null) Best.anchoredPosition = defaultBestPos;
         if (RecordButton != null) RecordButton.anchoredPosition = defaultRecordButtonPos;
+        if (Crown != null) Crown.anchoredPosition = defaultCrownPos;
     }
 }

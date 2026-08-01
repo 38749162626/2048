@@ -17,7 +17,7 @@ public class TileBoard : MonoBehaviour
     private TileGrid grid;
     private List<Tile> tiles;
 
-    public bool waiting {  get; private set; }
+    public bool waiting {  get;  set; }
 
     private Vector2 _touchStartPos;
     private bool _isSwiping = false;
