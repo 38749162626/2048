@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro; // 如果使用旧版 Text，请改为 using UnityEngine.UI;
+using UnityEngine.UI;        // Button 组件
+using TMPro;                 // 文本组件（如用旧版 Text，请改用 UnityEngine.UI）
 
 [System.Serializable]
 public class RecordData
@@ -17,20 +18,22 @@ public class RecordManager : MonoBehaviour
 {
     [Header("UI 引用")]
     public Transform content;               // Scroll View 的 Content
-    public GameObject itemPrefab;           // 带 Item 脚本的预制件
+    public GameObject itemPrefab;           // 列表项预制件（挂载 Item 脚本）
     public GameObject panel;                // 排行榜面板根对象
-    public CanvasGroup canvasGroup;         // panel 上的 CanvasGroup 组件
-    public TextMeshProUGUI passCountText;   // 显示通关次数的文本（可拖入 Text 或 TextMeshPro）
+    public CanvasGroup canvasGroup;         // 面板上的 CanvasGroup 组件
+    public TextMeshProUGUI passCountText;   // 显示通关次数的文本
+    public Button clearButton;             // 清除前10名以外记录的按钮
 
     [Header("动画设置")]
     [Range(0.1f, 2f)] public float fadeDuration = 0.3f;
 
     [Header("外部依赖")]
-    public TileBoard tileBoard;
+    public TileBoard tileBoard;             // 场景中的 TileBoard 实例
 
     public static RecordManager Instance { get; private set; }
 
     private const string PREFS_KEY = "LeaderboardRecords";
+    private const int MAX_RECORDS = 10;     // 排行榜最多保留前10名
     private List<RecordData> records = new List<RecordData>();
 
     public int PassCount { get; private set; }
@@ -46,28 +49,35 @@ public class RecordManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
     private void Start()
     {
-        // 初始化 CanvasGroup 完全隐藏
+        // 初始化 CanvasGroup 为完全隐藏状态
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 0f;
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
-        // 保持面板激活，仅由 CanvasGroup 控制可见性
+
+        // 保持面板对象激活，完全交由 CanvasGroup 控制显隐
         if (panel != null && !panel.activeSelf)
             panel.SetActive(true);
+
+        // 绑定清除按钮
+        if (clearButton != null)
+            clearButton.onClick.AddListener(ClearBeyondTop10);
 
         LoadAndRefresh();
     }
 
     /// <summary>
-    /// 显示排行榜（淡入），锁定游戏操作。
+    /// 显示排行榜（淡入），并锁定游戏操作。
     /// </summary>
     public void Show()
     {
@@ -75,7 +85,7 @@ public class RecordManager : MonoBehaviour
         isVisible = true;
 
         RefreshUI();
-        UpdatePassCountDisplay();    // 打开时刷新通关次数显示
+        UpdatePassCountDisplay();
 
         if (tileBoard != null)
             tileBoard.waiting = true;
@@ -85,7 +95,7 @@ public class RecordManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 隐藏排行榜（淡出），恢复游戏操作。
+    /// 隐藏排行榜（淡出），并恢复游戏操作。
     /// </summary>
     public void Hide()
     {
@@ -145,13 +155,45 @@ public class RecordManager : MonoBehaviour
     }
 
     // ========== 通关次数显示 ==========
-    /// <summary>
-    /// 更新通关次数 UI 文本（PassCount 变化时自动调用）。
-    /// </summary>
     private void UpdatePassCountDisplay()
     {
         if (passCountText != null)
             passCountText.text = PassCount.ToString();
+    }
+
+    // ========== 清除功能 ==========
+    /// <summary>
+    /// 删除排序后前10名以外的所有记录（公共方法，可绑定到按钮或外部调用）。
+    /// 清除后自动保存、刷新 UI、重算通关次数。
+    /// </summary>
+    public void ClearBeyondTop10()
+    {
+        // 确保排序
+        SortRecords();
+
+        if (records.Count > MAX_RECORDS)
+        {
+            records = records.GetRange(0, MAX_RECORDS);
+            SaveRecords();
+            RecalculatePassCount();
+            RefreshUI();
+            Debug.Log($"已清除 {MAX_RECORDS} 名以外的记录，当前保留 {records.Count} 条。");
+        }
+        else
+        {
+            Debug.Log("记录不足10条，无需清除。");
+        }
+    }
+
+    /// <summary>
+    /// 基于当前 records 重新计算 PassCount 并更新 UI。
+    /// </summary>
+    private void RecalculatePassCount()
+    {
+        PassCount = 0;
+        foreach (var rec in records)
+            if (rec.passed) PassCount++;
+        UpdatePassCountDisplay();
     }
 
     // ========== 记录管理 ==========
@@ -177,7 +219,7 @@ public class RecordManager : MonoBehaviour
         if (passed)
         {
             PassCount++;
-            UpdatePassCountDisplay();   // 通关次数变化时立即刷新 UI
+            UpdatePassCountDisplay();
         }
 
         SortRecords();
@@ -189,7 +231,7 @@ public class RecordManager : MonoBehaviour
     {
         LoadRecords();
         SortRecords();
-        UpdatePassCount();              // 内部会重新统计并更新显示
+        RecalculatePassCount();
         RefreshUI();
     }
 
@@ -221,18 +263,6 @@ public class RecordManager : MonoBehaviour
         });
     }
 
-    /// <summary>
-    /// 从已有记录中重新计算通关次数，并更新 UI 文本。
-    /// </summary>
-    private void UpdatePassCount()
-    {
-        PassCount = 0;
-        foreach (var rec in records)
-            if (rec.passed) PassCount++;
-
-        UpdatePassCountDisplay();   // 统计完成后更新 UI
-    }
-
     public void RefreshUI()
     {
         if (content == null || itemPrefab == null) return;
@@ -244,8 +274,10 @@ public class RecordManager : MonoBehaviour
         {
             GameObject itemObj = Instantiate(itemPrefab, content);
             Item item = itemObj.GetComponent<Item>();
-            if (item != null) item.Setup(i + 1, records[i]);
-            else Debug.LogError("itemPrefab 上缺少 Item 脚本！");
+            if (item != null)
+                item.Setup(i + 1, records[i]);
+            else
+                Debug.LogError("itemPrefab 上缺少 Item 脚本！");
         }
     }
 }
