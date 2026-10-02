@@ -45,6 +45,6 @@ public class FloatingText : MonoBehaviour
             yield return null;
         }
         textMeshPro.text = content;
-        rectTrans.anchoredPosition = new Vector3(70, 233, 0) + new Vector3(Random.Range(-20, 20), Random.Range(-20, 20), 0);
+        rectTrans.anchoredPosition = new Vector3(Random.Range(-20, 20), Random.Range(-20, 20), 0);
     }
 }

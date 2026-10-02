@@ -12,6 +12,7 @@ public class TileBoard : MonoBehaviour
 
     public Tile tilePrefab;
     public GameObject floatingTextPrefab;
+    public Transform floatingTextSpawnPoint;
     public TileState[] tileStates;
 
     private TileGrid grid;
@@ -21,6 +22,8 @@ public class TileBoard : MonoBehaviour
 
     private Vector2 _touchStartPos;
     private bool _isSwiping = false;
+
+    private bool hasPass;
 
     private void Awake()
     {
@@ -161,6 +164,8 @@ public class TileBoard : MonoBehaviour
 
         if (changed)
         {
+            AudioManager.instance.PlayMoveMusic();
+            
             StartCoroutine(WaitForChanges());
         }
     }
@@ -198,7 +203,7 @@ public class TileBoard : MonoBehaviour
 
     private bool CanMerge(Tile a, Tile b)
     {
-        return a.number == b.number && b.number != 2048 && !b.locked;
+        return a.number == b.number && !b.locked;
     }
 
     private void Merge(Tile a, Tile b)
@@ -211,10 +216,18 @@ public class TileBoard : MonoBehaviour
 
         b.SetState(tileStates[index], number);
         StartCoroutine(b.MergeAnimate());
+        
+        AudioManager.instance.PlayMergeMusic();
 
         gameManager.IncreaseScore(number);
-        GameObject floatingText = Instantiate(floatingTextPrefab, this.transform.parent);
+        GameObject floatingText = Instantiate(floatingTextPrefab, floatingTextSpawnPoint);
         StartCoroutine(floatingText.GetComponent<FloatingText>().SetText("+" + number));
+        
+        if (number == 2048 && hasPass != true)
+        {
+            AudioManager.instance.PlayWinMusic();
+            hasPass = true;
+        }
     }
 
     private int IndexOf(TileState state)
@@ -247,20 +260,8 @@ public class TileBoard : MonoBehaviour
         if (CheckForGameOver())
         {
             gameManager.GameOver();
-            RecordManager.AddRecord(gameManager.score, CheckForGamePass());
+            RecordManager.AddRecord(gameManager.score, hasPass);
         }
-    }
-
-    private bool CheckForGamePass()
-    {
-        foreach (var tile in tiles)
-        {
-            if (tile.number == 2048)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     private bool CheckForGameOver()
